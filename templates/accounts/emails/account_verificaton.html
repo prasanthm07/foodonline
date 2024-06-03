@@ -1,0 +1,9 @@
+{% spaceless %}
+
+hi {{user.first_name}},
+please click on below link to confirm your registration 
+<a href="http://{{ domain }}{% url 'activate' uidb64=uid token=token %}">Activate your account</a>
+
+
+
+{% endspaceless %}

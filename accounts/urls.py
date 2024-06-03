@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path,include
 from .import views
 
 urlpatterns = [
@@ -11,4 +11,13 @@ urlpatterns = [
 
     path('vendordashboard/',views.vendordashboard,name='vendordashboard'),
     path('cusdashboard/',views.cusdashboard,name='cusdashboard'),
+
+    path('activate/<uidb64>/<token>/',views.activate,name='activate'),
+
+   
+    path('forget_password/',views.forget_password,name='forget_password'),
+    path('rest_password/<uidb64>/<token>/',views.reset_password_vaildate,name='rest_password_vaildate'),
+    path('rest_password/',views.rest_password,name='rest_password'),
+
+    path('vendor/',include('vendor.urls')),
 ]

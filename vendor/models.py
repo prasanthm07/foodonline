@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import User,UserProfile
+from accounts.utlis import send_approved_mail
 
 # Create your models here.
 class Vendor(models.Model):
@@ -13,3 +14,21 @@ class Vendor(models.Model):
 
     def __str__(self) -> str:
         return self.vendor_name
+    
+    def save(self,*args, **kwargs):
+        if self.pk is not None:
+            orig=Vendor.objects.get(pk=self.pk)            
+            if orig.is_approved!=self.is_approved:
+                mail_template="accounts/emails/admin_is_approver.html"
+                context={
+                    'user':self.user,
+                    'is_approved':self.is_approved
+                }
+                if self.is_approved==True: # 
+                    mail_subject="congratulation your restaurant has been approved"
+                    send_approved_mail(mail_subject,mail_template,context)
+                else:
+                    mail_subject="your restaurant not eligible please contanact support@foodonline.com"
+                    send_approved_mail(mail_subject,mail_template,context)
+
+        return super(Vendor,self).save(*args, **kwargs)
